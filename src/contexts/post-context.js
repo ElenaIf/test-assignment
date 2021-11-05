@@ -8,8 +8,10 @@ export function useAuth() {
 }
 
 export const AuthProvider = ({ children }) => {
-	const [token, setToken] = useState(null);
+	const [token, setToken] = useState(null); //to save here the token we will get
+	const [posts, setPosts] = useState(null);
 
+	//to get the token (POST method)
 	const getToken = (email, name) => {
 		let bodyFormData = new FormData();
 		bodyFormData.append("client_id", process.env.REACT_APP_CLIENT_ID);
@@ -23,16 +25,34 @@ export const AuthProvider = ({ children }) => {
 				headers: { "Content-Type": "multipart/form-data" },
 			}).then((resp) => {
 				setToken(resp.data.data.sl_token);
-				console.log(token);
+				console.log("hello");
+				console.log(resp.data.data.sl_token);
+				fetchPosts(resp.data.data.sl_token);
 			});
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
+	const fetchPosts = (myToken) => {
+		axios
+			.get("https://api.supermetrics.com/assignment/posts", {
+				params: {
+					sl_token: myToken,
+					page: 1,
+				},
+			})
+			.then((response) => {
+				setPosts(response.data.data.posts);
+				console.log(posts);
+			});
+	};
+
 	const value = {
 		getToken,
 		token,
+		fetchPosts,
+		posts,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

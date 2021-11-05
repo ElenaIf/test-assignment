@@ -16,9 +16,7 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
 	<AuthProvider>
-		<React.StrictMode>
-			<App />
-		</React.StrictMode>
+		<App />
 	</AuthProvider>,
 	document.getElementById("root")
 );
