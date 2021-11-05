@@ -1,0 +1,12 @@
+.container {
+	height: 100vh;
+	width: 100vw;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: min-content 1fr min-content;
+	gap: 0px 0px;
+	grid-template-areas:
+		"header"
+		"main"
+		"footer";
+}

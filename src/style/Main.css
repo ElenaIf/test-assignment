@@ -1,0 +1,7 @@
+main {
+	grid-area: main;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--light-pink-color);
+}

@@ -1,0 +1,11 @@
+:root {
+	--text-main-color: white;
+	--light-blue-color: #7299bd;
+	--dark-blue-color: #39638a;
+	--light-pink-color: #f0d9d7;
+	--light-green-color: #d1d692;
+	--dark-green-color: #878a65;
+	--transparent-white-color-original: rgba(255, 255, 255, 0.5);
+	--transparent-white-color-transition: rgba(255, 255, 255, 0.9);
+	--transparent-white-color-mobile: rgba(255, 255, 255, 0.856);
+}
