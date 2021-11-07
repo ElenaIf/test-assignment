@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
 const AuthContext = React.createContext();
@@ -10,6 +10,9 @@ export function useAuth() {
 export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(null); //to save here the token we will get
 	const [posts, setPosts] = useState(null);
+
+	const [uniqueNames, setUniqueNames] = useState([]);
+	const [uniqueIds, setUniqueIds] = useState([]);
 
 	//to get the token (POST method)
 	const getToken = (email, name) => {
@@ -44,8 +47,32 @@ export const AuthProvider = ({ children }) => {
 			})
 			.then((response) => {
 				setPosts(response.data.data.posts);
-				console.log(posts);
 			});
+	};
+
+	const getUniqueUsers = (allPosts) => {
+		let allUsers = [];
+		let allNames = [];
+
+		allPosts.forEach((post) => {
+			if (post.from_id) {
+				if (!allUsers.includes(post.from_id)) {
+					allUsers.push(post.from_id);
+				}
+			}
+		});
+
+		allUsers.forEach((user) => {
+			allPosts.forEach((post) => {
+				if (post.from_id === user && !allNames.includes(post.from_name)) {
+					allNames.push({ [post.from_id]: [post.from_name] });
+				}
+			});
+		});
+		setUniqueIds(allUsers);
+		setUniqueNames(allNames);
+		console.log(allNames);
+		console.log(allUsers);
 	};
 
 	const value = {
@@ -53,6 +80,9 @@ export const AuthProvider = ({ children }) => {
 		token,
 		fetchPosts,
 		posts,
+		uniqueNames,
+		uniqueIds,
+		getUniqueUsers,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

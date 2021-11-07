@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 import { useAuth } from "../../contexts/post-context";
 
@@ -12,6 +12,7 @@ const LoginForm = () => {
 
 	return (
 		<form
+			className="login-form"
 			onSubmit={(event) => {
 				event.preventDefault();
 				getToken(emailRef.current.value, nameRef.current.value);
