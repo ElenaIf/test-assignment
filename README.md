@@ -4,6 +4,9 @@
 npm install axios
 npm install react-router
 npm install react-router-dom
+npm install --save moment react-moment
+npm install --save moment-timezone
+
 
 ```
 

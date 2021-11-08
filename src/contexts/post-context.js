@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 
 const AuthContext = React.createContext();
@@ -8,7 +8,7 @@ export function useAuth() {
 }
 
 export const AuthProvider = ({ children }) => {
-	const [token, setToken] = useState(null); //to save here the token we will get
+	const [token, setToken] = useState(localStorage.getItem("s_token")); //to save here the token we will get
 	const [posts, setPosts] = useState(null);
 
 	const [uniqueNames, setUniqueNames] = useState([]);
@@ -28,11 +28,11 @@ export const AuthProvider = ({ children }) => {
 				headers: { "Content-Type": "multipart/form-data" },
 			}).then((resp) => {
 				setToken(resp.data.data.sl_token);
-				console.log("hello");
-				console.log(resp.data.data.sl_token);
+				localStorage.setItem("s_token", resp.data.data.sl_token);
 				fetchPosts(resp.data.data.sl_token);
 			});
 		} catch (err) {
+			alert(err);
 			console.log(err);
 		}
 	};
@@ -47,7 +47,19 @@ export const AuthProvider = ({ children }) => {
 			})
 			.then((response) => {
 				setPosts(response.data.data.posts);
+				window.setTimeout(removeToken, 3600000);
+			})
+			.catch((error) => {
+				if (error.message === "Request failed with status code 500") {
+					removeToken();
+				}
 			});
+	};
+
+	const removeToken = () => {
+		localStorage.removeItem("s_token");
+		alert("Token has expired!");
+		document.location.reload();
 	};
 
 	const getUniqueUsers = (allPosts) => {
@@ -71,8 +83,6 @@ export const AuthProvider = ({ children }) => {
 		});
 		setUniqueIds(allUsers);
 		setUniqueNames(allNames);
-		console.log(allNames);
-		console.log(allUsers);
 	};
 
 	const value = {

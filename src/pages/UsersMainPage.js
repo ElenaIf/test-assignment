@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { useState } from "react/cjs/react.development";
+import Moment from "react-moment";
+import "moment-timezone";
+import moment from "moment";
 
 // Components //
-import Message from "../components/Message/Message";
+//import Message from "../components/Message/Message";
 
 // Context //
 import { useAuth } from "../contexts/post-context";
@@ -11,14 +14,14 @@ import { useAuth } from "../contexts/post-context";
 import "../style/UsersMainPage.css";
 
 const UsersMainPage = () => {
-	const { posts, fetchPosts } = useAuth();
+	const { posts, fetchPosts, token } = useAuth();
 	const [chosenUser, setChosenUser] = useState(null);
 
-	//This is for testing//
 	useEffect(() => {
-		fetchPosts("smslt_5d3303505d_945d9236be");
+		fetchPosts(token);
+		console.log("useEffect");
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-	//
 
 	let uniqueUsers = [];
 	if (posts) {
@@ -53,12 +56,6 @@ const UsersMainPage = () => {
 		return { user_id: x, user_name: uniqueNames[i], posts_count: numberOfPosts[i] };
 	});
 
-	console.log("Here are the users", uniqueUsers);
-	console.log("Here are the names", uniqueNames);
-	console.log("Here are the counts", numberOfPosts);
-	console.log("Here are the names and IDs", uniqueIdsAndUsersArray);
-	console.log(posts);
-
 	return (
 		<section className="posts-container">
 			<div className="posts-left">
@@ -68,20 +65,30 @@ const UsersMainPage = () => {
 
 				{posts !== null && (
 					<div className="user-list">
-						{uniqueIdsAndUsersArray.map((element) => {
-							return (
-								<div
-									className="user-name"
-									onClick={() => {
-										setChosenUser(element.user_id);
-										console.log("chosen user is", chosenUser);
-									}}
-								>
-									{element.user_name}
-									<span> Number of posts: {element.posts_count}</span>
-								</div>
-							);
-						})}
+						{uniqueIdsAndUsersArray
+							.sort((x, y) => {
+								if (x.user_name < y.user_name) {
+									return -1;
+								}
+								if (x.user_name > y.user_id) {
+									return 1;
+								}
+								return 0;
+							})
+							.map((element) => {
+								return (
+									<div
+										key={element.user_id}
+										className="user-name"
+										onClick={() => {
+											setChosenUser(element.user_id);
+										}}
+									>
+										{element.user_name}
+										<span> Number of posts: {element.posts_count}</span>
+									</div>
+								);
+							})}
 					</div>
 				)}
 			</div>
@@ -106,7 +113,15 @@ const UsersMainPage = () => {
 								}
 							})
 							.map((post) => {
-								return <div className="message">{post.message}</div>;
+								return (
+									<div key={post.id} className="message">
+										<div>
+											{" "}
+											<Moment date={post.created_time} format="MMMM D, YYYY HH:MM:SS" />
+										</div>
+										{post.message}
+									</div>
+								);
 							})}
 					</div>
 				)}

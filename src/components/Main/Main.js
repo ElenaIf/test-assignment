@@ -16,11 +16,11 @@ const Main = () => {
 	return (
 		<main>
 			<Routes>
-				{/* {token !== null ? ( */}
-				<Route path="/" element={<UsersMainPage />} />
-				{/* ) : ( */}
-				{/* <Route end={true} path="/" element={<LoginPage />} /> */}
-				{/* )} */}
+				{token !== null ? (
+					<Route path="/" element={<UsersMainPage />} />
+				) : (
+					<Route end={true} path="/" element={<LoginPage />} />
+				)}
 			</Routes>
 		</main>
 	);
