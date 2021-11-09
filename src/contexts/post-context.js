@@ -3,16 +3,14 @@ import axios from "axios";
 
 const AuthContext = React.createContext();
 
+// making a hook to use in other components //
 export function useAuth() {
 	return useContext(AuthContext);
 }
 
 export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(localStorage.getItem("s_token")); //to save here the token we will get
-	const [posts, setPosts] = useState(null);
-
-	const [uniqueNames, setUniqueNames] = useState([]);
-	const [uniqueIds, setUniqueIds] = useState([]);
+	const [posts, setPosts] = useState(null); //all the posts that we fetch
 
 	//to get the token (POST method)
 	const getToken = (email, name) => {
@@ -37,6 +35,7 @@ export const AuthProvider = ({ children }) => {
 		}
 	};
 
+	//to fetch all the posts after we got the token
 	const fetchPosts = (myToken) => {
 		axios
 			.get("https://api.supermetrics.com/assignment/posts", {
@@ -56,43 +55,56 @@ export const AuthProvider = ({ children }) => {
 			});
 	};
 
+	//delete token from the local storage
 	const removeToken = () => {
 		localStorage.removeItem("s_token");
 		alert("Token has expired!");
 		document.location.reload();
 	};
 
-	const getUniqueUsers = (allPosts) => {
-		let allUsers = [];
-		let allNames = [];
+	//making an array of unique users ids
+	let uniqueUsers = [];
+	if (posts) {
+		uniqueUsers = [...new Set(posts.map((post) => post.from_id))];
+	}
 
-		allPosts.forEach((post) => {
-			if (post.from_id) {
-				if (!allUsers.includes(post.from_id)) {
-					allUsers.push(post.from_id);
-				}
-			}
-		});
-
-		allUsers.forEach((user) => {
-			allPosts.forEach((post) => {
-				if (post.from_id === user && !allNames.includes(post.from_name)) {
-					allNames.push({ [post.from_id]: [post.from_name] });
+	//making an array of unique users names
+	let uniqueNames = [];
+	if (posts) {
+		uniqueUsers.forEach((user) => {
+			posts.forEach((post) => {
+				if (post.from_id === user && !uniqueNames.includes(post.from_name)) {
+					uniqueNames.push(post.from_name);
 				}
 			});
 		});
-		setUniqueIds(allUsers);
-		setUniqueNames(allNames);
-	};
+	}
+
+	//making an array of number of posts each user made
+	let numberOfPosts = [];
+	if (posts) {
+		uniqueUsers.forEach((user) => {
+			let count = 0;
+			posts.forEach((post) => {
+				if (post.from_id === user) {
+					count = count + 1;
+				}
+			});
+			numberOfPosts.push(count);
+		});
+	}
+
+	//now we combine all three arrays (ids, user names and post counts) into one array of objects
+	const uniqueIdsAndUsersArray = uniqueUsers.map((x, i) => {
+		return { user_id: x, user_name: uniqueNames[i], posts_count: numberOfPosts[i] };
+	});
 
 	const value = {
 		getToken,
 		token,
 		fetchPosts,
 		posts,
-		uniqueNames,
-		uniqueIds,
-		getUniqueUsers,
+		uniqueIdsAndUsersArray,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
