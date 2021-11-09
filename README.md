@@ -1,3 +1,7 @@
+# Front-end Assignment
+
+Assignment is done with JavaScript. For state management context is used.
+
 ## Packages used
 
 ```
