@@ -7,6 +7,9 @@ import "moment-timezone";
 // Context //
 import { useAuth } from "../../contexts/post-context";
 
+// Style //
+import "../../style/MessageList.css";
+
 const MessageList = ({ sortOldFirst, postSearchInput, chosenUser }) => {
 	const { posts } = useAuth();
 	return (
@@ -40,12 +43,12 @@ const MessageList = ({ sortOldFirst, postSearchInput, chosenUser }) => {
 				.map((post) => {
 					return (
 						<div key={post.id} className="message">
-							<div>
+							<div className="time">
 								{" "}
 								<Moment date={post.created_time} format="MMMM D, YYYY HH:MM:SS" />
 							</div>
 							{post.message}
-							<div>Sent by: {post.from_name}</div>
+							<div className="message-sent-by">Sent by: {post.from_name}</div>
 						</div>
 					);
 				})}

@@ -3,6 +3,9 @@ import React from "react";
 // Context //
 import { useAuth } from "../../contexts/post-context";
 
+// Style //
+import "../../style/UsersList.css";
+
 const UsersList = ({ userSearchInput, setChosenUser }) => {
 	const { uniqueIdsAndUsersArray } = useAuth();
 	return (
@@ -36,7 +39,7 @@ const UsersList = ({ userSearchInput, setChosenUser }) => {
 							}}
 						>
 							{element.user_name}
-							<span> Number of posts: {element.posts_count}</span>
+							<div className="count-circle">{element.posts_count}</div>
 						</div>
 					);
 				})}

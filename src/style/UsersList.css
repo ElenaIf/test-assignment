@@ -1,0 +1,28 @@
+.user-list {
+	margin: 1rem;
+}
+
+.user-name {
+	border: 1px solid var(--dark-blue-color);
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.user-name:hover {
+	cursor: pointer;
+}
+
+.count-circle {
+	background-color: var(--light-blue-color);
+	margin-right: 1rem;
+	border-radius: 100%;
+	min-height: 30px;
+	min-width: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--text-main-color);
+}

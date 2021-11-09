@@ -1,0 +1,22 @@
+.post-list {
+	margin: 1rem;
+}
+
+.message {
+	border: 1px solid var(--dark-blue-color);
+	margin-top: 0.5rem;
+	padding: 0.5rem;
+}
+
+.time {
+	border-bottom: 1px solid var(--dark-blue-color);
+	margin: 0 0 0.5rem 0;
+	padding: 0.5rem 0;
+}
+
+.message-sent-by {
+	border-top: 1px solid var(--dark-blue-color);
+	margin: 0.5rem 0 0 0;
+	color: var(--dark-green-color);
+	padding: 0.5rem 0;
+}

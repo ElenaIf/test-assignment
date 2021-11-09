@@ -1,6 +1,5 @@
 .posts-container {
 	margin: 3rem 2rem;
-	border: 1px solid red;
 	width: 80%;
 	display: flex;
 }
@@ -22,16 +21,6 @@
 
 .left-search input {
 	padding: 0.2rem;
-}
-
-.user-list {
-	margin: 1rem;
-}
-
-.user-name {
-	border: 1px solid green;
-	margin-top: 0.5rem;
-	padding: 0.5rem;
 }
 
 /* Right half */
@@ -59,17 +48,11 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 0.1rem;
-	margin-right: 0.5rem;
+	padding: 0.1rem 0.25rem;
+	margin-right: 0.7rem;
 	background-color: var(--text-main-color);
 }
 
-.post-list {
-	margin: 1rem;
-}
-
-.message {
-	border: 1px solid blue;
-	margin-top: 0.5rem;
-	padding: 0.5rem;
+.arrow:hover {
+	cursor: pointer;
 }
